@@ -1,10 +1,31 @@
 
 
+class Map:
+    def __init__(self, xMax, yMax):
+        self.xMax = xMax
+        self.yMax = yMax
+        self.scents = {}
+
+    def add_scent(self, x, y):
+        self.scents[(x, y)] = True
+
+    def has_scent_at(self, x, y):
+        return self.scents.get((x, y), False)
+
+    def position_out_of_bounds(self, x, y):
+        xOutOfBounds = x < 0 or x > self.xMax
+        yOutOfBounds = y < 0 or y > self.yMax
+
+        return xOutOfBounds or yOutOfBounds
+
+
 class Robot:
-    def __init__(self, x, y, orientation):
+    def __init__(self, x, y, orientation, map):
         self.x = x
         self.y = y
         self.orientation = orientation
+        self.map = map
+        self.is_lost = False
 
     def perform_instruction(self, instruction):
         if instruction == 'L':
@@ -12,9 +33,23 @@ class Robot:
         if instruction == 'R':
             self.orientation = rotate_right(self.orientation)
         if instruction == 'F':
-            (xDiff, yDiff) = move_forwards(self.orientation)
-            self.x += xDiff
-            self.y += yDiff
+            self.move_forwards()
+
+    def move_forwards(self):
+        (xDiff, yDiff) = step_forwards(self.orientation)
+        newX = self.x + xDiff
+        newY = self.y + yDiff
+
+        if self.map.position_out_of_bounds(newX, newY):
+            if self.map.has_scent_at(self.x, self.y):
+                # ignore instruction
+                return
+            else:
+                self.map.add_scent(self.x, self.y)
+                self.is_lost = True
+
+        self.x = newX
+        self.y = newY
 
 
 def rotate_left(orientation):
@@ -37,7 +72,7 @@ def rotate_right(orientation):
     return next_orientation[orientation]
 
 
-def move_forwards(orientation):
+def step_forwards(orientation):
     moves = {
         'N': (0, 1),
         'E': (1, 0),
