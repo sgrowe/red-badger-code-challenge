@@ -98,8 +98,9 @@ def parse_robots_and_instructions(input):
     i = 1
     while i < len(lines):
         # skip any blank lines
-        while i < len(lines) and not lines[i]:
+        if not lines[i]:
             i += 1
+            continue
 
         robot = parse_robot(lines[i], map)
         instructions = lines[i + 1]
