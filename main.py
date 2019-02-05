@@ -110,3 +110,14 @@ def parse_map(line):
 def parse_robot(line, map):
     xMax, yMax, orientation = line.split()
     return Robot(int(xMax), int(yMax), orientation, map)
+
+
+def run_robots(input):
+    output_lines = []
+    for robot, instructions in parse_robots_and_instructions(input):
+        for instruction in instructions:
+            robot.perform_instruction(instruction)
+        output_lines.append(robot.format_status())
+
+    output_lines.append('')  # Add a trailing new line
+    return '\n'.join(output_lines)

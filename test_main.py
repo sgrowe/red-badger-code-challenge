@@ -1,5 +1,5 @@
 import pytest
-from main import Robot, Map, parse_robots_and_instructions
+from main import Robot, Map, parse_robots_and_instructions, run_robots
 
 
 @pytest.fixture
@@ -127,3 +127,19 @@ def test_format_status_indicates_if_robot_is_lost(default_map):
     robot = Robot(10, 3, 'E', default_map)
     robot.perform_instruction('F')
     assert robot.format_status() == '11 3 E LOST'
+
+
+def test_run_program_produces_expected_output():
+    input = '''5 3
+1 1 E
+RFRFRFRF
+3 2 N
+FRRFLLFFRRFLL
+0 3 W
+LLFFFLFLFL
+'''
+    output = run_robots(input)
+    assert output == '''1 1 E
+3 3 N LOST
+2 3 S
+'''
