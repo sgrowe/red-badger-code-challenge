@@ -1,5 +1,5 @@
 import pytest
-from main import Robot, Map
+from main import Robot, Map, parse_robots_and_instructions
 
 
 @pytest.fixture
@@ -81,3 +81,38 @@ def test_robot_does_not_moves_out_of_bounds_if_there_is_a_scent_at_its_location(
     assert robot.x == 10
     assert robot.y == 10
     assert not robot.is_lost
+
+
+def test_parse_robots_and_instructions_returns_correct_data():
+    input = '''5 3
+1 1 E
+RFRFRFRF
+3 2 N
+FRRFLLFFRRFLL
+0 3 W
+LLFFFLFLFL
+'''
+    robots_and_instructions = parse_robots_and_instructions(input)
+
+    assert len(robots_and_instructions) == 3
+
+    (robot, instructions) = robots_and_instructions[0]
+    assert robot.map.xMax == 5
+    assert robot.map.yMax == 3
+
+    assert robot.x == 1
+    assert robot.y == 1
+    assert robot.orientation == 'E'
+    assert instructions == 'RFRFRFRF'
+
+    (robot, instructions) = robots_and_instructions[1]
+    assert robot.x == 3
+    assert robot.y == 2
+    assert robot.orientation == 'N'
+    assert instructions == 'FRRFLLFFRRFLL'
+
+    (robot, instructions) = robots_and_instructions[2]
+    assert robot.x == 0
+    assert robot.y == 3
+    assert robot.orientation == 'W'
+    assert instructions == 'LLFFFLFLFL'

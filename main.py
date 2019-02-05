@@ -80,3 +80,27 @@ def step_forwards(orientation):
         'W': (-1, 0),
     }
     return moves[orientation]
+
+
+def parse_robots_and_instructions(input):
+    lines = input.strip().splitlines()
+    map = parse_map(lines[0])
+
+    robots_and_instructions = []
+
+    for i in range(1, len(lines), 2):
+        robot = parse_robot(lines[i], map)
+        instructions = lines[i + 1]
+        robots_and_instructions.append((robot, instructions))
+
+    return robots_and_instructions
+
+
+def parse_map(line):
+    xMax, yMax = line.split()
+    return Map(int(xMax), int(yMax))
+
+
+def parse_robot(line, map):
+    xMax, yMax, orientation = line.split()
+    return Robot(int(xMax), int(yMax), orientation, map)
