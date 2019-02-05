@@ -1,3 +1,4 @@
+import sys
 
 
 class Map:
@@ -121,3 +122,10 @@ def run_robots(input):
 
     output_lines.append('')  # Add a trailing new line
     return '\n'.join(output_lines)
+
+
+if __name__ == '__main__':
+    input_filename = sys.argv[1]
+    with open(input_filename) as f:
+        output = run_robots(f.read())
+    print(output, end='')
