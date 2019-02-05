@@ -116,3 +116,14 @@ LLFFFLFLFL
     assert robot.y == 3
     assert robot.orientation == 'W'
     assert instructions == 'LLFFFLFLFL'
+
+
+def test_format_status_outputs_robots_position(default_map):
+    robot = Robot(2, 3, 'S', default_map)
+    assert robot.format_status() == '2 3 S'
+
+
+def test_format_status_indicates_if_robot_is_lost(default_map):
+    robot = Robot(10, 3, 'E', default_map)
+    robot.perform_instruction('F')
+    assert robot.format_status() == '11 3 E LOST'

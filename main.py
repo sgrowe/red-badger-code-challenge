@@ -51,6 +51,12 @@ class Robot:
         self.x = newX
         self.y = newY
 
+    def format_status(self):
+        status = f'{self.x} {self.y} {self.orientation}'
+        if self.is_lost:
+            status += ' LOST'
+        return status
+
 
 def rotate_left(orientation):
     next_orientation = {
