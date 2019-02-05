@@ -95,10 +95,16 @@ def parse_robots_and_instructions(input):
 
     robots_and_instructions = []
 
-    for i in range(1, len(lines), 2):
+    i = 1
+    while i < len(lines):
+        # skip any blank lines
+        while i < len(lines) and not lines[i]:
+            i += 1
+
         robot = parse_robot(lines[i], map)
         instructions = lines[i + 1]
         robots_and_instructions.append((robot, instructions))
+        i += 2
 
     return robots_and_instructions
 

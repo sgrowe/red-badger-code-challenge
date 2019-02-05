@@ -83,6 +83,28 @@ def test_robot_does_not_moves_out_of_bounds_if_there_is_a_scent_at_its_location(
     assert not robot.is_lost
 
 
+def test_parse_robots_and_instructions_allows_whitespace_between_robots_data():
+    input = '''5 3
+1 1 E
+RFRFRFRF
+
+3 2 N
+FRRFLLFFRRFLL
+
+0 3 W
+LLFFFLFLFL
+'''
+    robots_and_instructions = parse_robots_and_instructions(input)
+
+    assert len(robots_and_instructions) == 3
+
+    (robot, instructions) = robots_and_instructions[2]
+    assert robot.x == 0
+    assert robot.y == 3
+    assert robot.orientation == 'W'
+    assert instructions == 'LLFFFLFLFL'
+
+
 def test_parse_robots_and_instructions_returns_correct_data():
     input = '''5 3
 1 1 E
