@@ -11,6 +11,10 @@ class Robot:
             self.orientation = rotate_left(self.orientation)
         if instruction == 'R':
             self.orientation = rotate_right(self.orientation)
+        if instruction == 'F':
+            (xDiff, yDiff) = move_forwards(self.orientation)
+            self.x += xDiff
+            self.y += yDiff
 
 
 def rotate_left(orientation):
@@ -31,3 +35,13 @@ def rotate_right(orientation):
         'W': 'N',
     }
     return next_orientation[orientation]
+
+
+def move_forwards(orientation):
+    moves = {
+        'N': (0, 1),
+        'E': (1, 0),
+        'S': (0, -1),
+        'W': (-1, 0),
+    }
+    return moves[orientation]
